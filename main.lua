@@ -149,7 +149,7 @@ function init()
 			{x=0,y=20,z=0}
 		},
 	}
-	screen={w=400,h=240}
+	screen={w=400,h=400}
 --[[	l={
 		{1,2},
 		{1,3},
@@ -161,6 +161,7 @@ function init()
 	moving=false
 	wait=90
     rad = 20
+    love.window.setMode(screen.w,screen.h)
 end
 
 function tri(x1,y1,x2,y2,x3,y3,c)
@@ -224,7 +225,7 @@ function love.draw()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill",0,0,screen.w,screen.h)
     love.graphics.setColor(0,0,0)
-    love.graphics.print(p.va)
+    -- love.graphics.print(p.z)
 
     pts = {}
 
@@ -249,12 +250,12 @@ function love.draw()
         p.x = p.x + math.sin((p.a+.25)*math.pi*2)
         p.y = p.y + math.cos((p.a+.25)*math.pi*2)
     end
-    if love.keyboard.isDown("=") then
-        rad = rad + 1
-    end
-    if love.keyboard.isDown("-") then
-        rad = rad - 1
-    end
+    -- if love.keyboard.isDown("=") then
+    --     p.z = p.z + 1
+    -- end
+    -- if love.keyboard.isDown("-") then
+    --     p.z = p.z - 1
+    -- end
 
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
 	local vplane=make_cplane(54,63+p.z,p.va,rad/2,rad)
