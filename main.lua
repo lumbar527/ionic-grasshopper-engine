@@ -99,7 +99,7 @@ function init()
 	pts={}
     triangle_function = tri
     sat = true
-	p={x=32,y=32,z=5,a=-0.6,va=0.25}
+	p={x=32,y=32,z=10,a=-0.6,va=0.25}
 --[[	m={
 		{x=0,y=0,z1=0,z2=20},
 		{x=20,y=0,z1=0,z2=20},
@@ -160,6 +160,7 @@ function init()
 	horizon=0
 	moving=false
 	wait=90
+    rad = 20
 end
 
 function tri(x1,y1,x2,y2,x3,y3,c)
@@ -223,7 +224,7 @@ function love.draw()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill",0,0,screen.w,screen.h)
     love.graphics.setColor(0,0,0)
-    love.graphics.print(p.a)
+    love.graphics.print(p.va)
 
     pts = {}
 
@@ -248,9 +249,15 @@ function love.draw()
         p.x = p.x + math.sin((p.a+.25)*math.pi*2)
         p.y = p.y + math.cos((p.a+.25)*math.pi*2)
     end
+    if love.keyboard.isDown("=") then
+        rad = rad + 1
+    end
+    if love.keyboard.isDown("-") then
+        rad = rad - 1
+    end
 
-    local pplane=make_cplane(p.x,p.y,p.a,10,20)
-	local vplane=make_cplane(54,63+p.z,p.va,10,10)
+    local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
+	local vplane=make_cplane(54,63+p.z,p.va,rad/2,rad)
 
     -- old_tri = triangles
     -- player_tris = player_create()
@@ -324,7 +331,7 @@ function love.draw()
 		local pt1=pts[px[2]][1]
 		local pt2=pts[px[2]][2]
 		local pt3=pts[px[2]][3]
-        love.graphics.print("Going",0,10)
+        -- love.graphics.print("Going",0,10)
         if pt1[1] and pt2[1] and pt3[1] then
             love.graphics.print("gone",0,20)
             -- gfx.drawText("Showing",0,80)
@@ -345,41 +352,10 @@ function love.draw()
             pt2[6]*6.4,pt2[5]*12.8
             ]]--
             local pdist=px[1]
-            -- print(pdist)
-            -- local c=sget(flr(pdist/270*6)+8,0)
 
-            -- if pdist>270 or pdist<=0 then
-            --     -- if skp then
-            --     goto skip
-            --     -- end
-            -- elseif pdist>240 then
-            --     -- gfx.setPattern(0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0)
-            -- elseif pdist>210 then
-            --     gfx.setPattern(0x80,0x0,0x0,0x0,0x0,0x0,0x0,0x0)
-            -- elseif pdist>180 then
-            --     gfx.setPattern(0x88,0x0,0x0,0x0,0x88,0x0,0x0,0x0)
-            -- elseif pdist>150 then
-            --     gfx.setPattern(0xaa,0x0,0xaa,0x0,0xaa,0x0,0xaa,0x0)
-            -- elseif pdist>120 then
-            --     gfx.setPattern(0xaa,0x55,0xaa,0x55,0xaa,0x55,0xaa,0x55)
-            -- elseif pdist>90 then
-            --     gfx.setPattern(0x55,0xff,0x55,0xff,0x55,0xff,0x55,0xff)
-            -- elseif pdist>60 then
-            --     gfx.setPattern(0x77,0xff,0xff,0xff,0x77,0xff,0xff,0xff)
-            -- elseif pdist>0 then
-            --     gfx.setPattern(0x7f,0xff,0xff,0xff,0xff,0xff,0xff,0xff)
+            love.graphics.setColor(0,0,50/pdist)
 
-            -- elseif pdist>0 then
-            --     gfx.setPattern(0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff)
-            -- else
-                -- gfx.setPattern(0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff)
-            -- end
-
-            -- gfx.setColor(gfx.kColorXOR)
-            -- gfx.fillTriangle(0,0,0,240,400,0)
-        
-            -- tri(pt1[6]*screen.w/20,pt1[4]*screen.h/10,pt2[6]*screen.w/20,pt2[4]*screen.h/10,pt3[6]*screen.w/20,pt3[4]*screen.h/10,c)
-            triangle_function(pt1[6]*screen.w/20,pt1[4]*screen.h/10,pt2[6]*screen.w/20,pt2[4]*screen.h/10,pt3[6]*screen.w/20,pt3[4]*screen.h/10)
+            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2)
             ::skip::
         end
 	end
