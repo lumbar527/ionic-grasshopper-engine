@@ -162,6 +162,7 @@ function init()
 	wait=90
     rad = 20
     love.window.setMode(screen.w,screen.h)
+    texture = love.graphics.newImage("texture.png")
 end
 
 function tri(x1,y1,x2,y2,x3,y3,c)
@@ -188,6 +189,19 @@ function tri(x1,y1,x2,y2,x3,y3,c)
 	for i=1,p do
 		love.graphics.line(x3,y3,ux+i*sx,uy+i*sy)
 	end
+    -- love.graphics.stencil(function()
+    --     love.graphics.polygon("fill",x1,y1,x2,y2,x3,y3)
+    -- end, "replace", 1)
+
+    -- love.graphics.setStencilTest("greater", 0)
+
+    -- x = min(x1,x2,x3)
+    -- y = min(y1,y2,y3)
+    -- x_max = max(x1,x2,x3) - x
+    -- y_max = max(y1,y2,y3) - y
+    -- love.graphics.draw(texture, x, y, 0, x_max/128, y_max/128)
+
+    -- love.graphics.setStencilTest()
 end
 
 function sort(l)
@@ -231,7 +245,6 @@ function love.draw()
 
     p.a = p.a - mx/1000
     p.va = p.va + my/1000
-    -- love.graphics.print(mx/100)
     mx = 0
     my = 0
     if love.keyboard.isDown("w") then
@@ -250,22 +263,9 @@ function love.draw()
         p.x = p.x + math.sin((p.a+.25)*math.pi*2)
         p.y = p.y + math.cos((p.a+.25)*math.pi*2)
     end
-    -- if love.keyboard.isDown("=") then
-    --     p.z = p.z + 1
-    -- end
-    -- if love.keyboard.isDown("-") then
-    --     p.z = p.z - 1
-    -- end
 
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
 	local vplane=make_cplane(54,63+p.z,p.va,rad/2,rad)
-
-    -- old_tri = triangles
-    -- player_tris = player_create()
-    -- for i=1,#player_tris do
-    --     triangles[#triangles+1] = player_tris[i]
-    -- end
-
 
 	--[[ Clipping: Theory
 		First, obtain all the points. If they are all offscreen, then ignore or don't add them!
@@ -275,28 +275,20 @@ function love.draw()
 		local t={}
 		for j=1,3 do
             t[j] = do_intersect(pplane[1],pplane[2],pplane[3],pplane[4],triangles[i][j].x,triangles[i][j].y,p.x,p.y)
-			-- add(t,do_intersect(pplane[1],pplane[2],pplane[3],pplane[4],triangles[i][j].x,triangles[i][j].y,p.x,p.y))
 
 			t[j][6]=t[j][6]
 
 			local pdist=math.sqrt((triangles[i][j].x-p.x)^2+(triangles[i][j].y-p.y)^2)
 
 			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],--[[64,54-p.z,63,74-p.z,]]pdist+64,64+triangles[i][j].z,54,63)
-			-- local z2=do_intersect(64,54-p.z,63,74-p.z,pdist+64,64-triangles[i][j].z2,54,63)
 			if not z1[1] then
 				t[j][1] = false
 			end
---		local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist+64,64-m[i].z1,54,63)
---		local z2=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist+64,64-m[i].z2,54,63)
 
-			t[j][4]=10-z1[6]
-			-- pts[i][5]=z2[6]
+            t[j][4]=10-z1[6]
 		end
 		pts[#pts+1] = t
 	end
-	
-	-- horizon=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],127,62,54,63)[6]
-	
 	
 	-- redo for triangle
 	for i=1,#triangles do
@@ -310,42 +302,13 @@ function love.draw()
 	sort(ol)
 
     -- draw
-    -- gfx.setColor(gfx.kColorWhite)
-    -- gfx.fillRect(0, 0, 400, 240)
-
-	-- gfx.setColor(gfx.kColorBlack)
-	-- gfx.drawLine(0,horizon/10*screen.h,400,horizon/10*screen.h)
-
-    -- gfx.setColor(gfx.kColorWhite)
-    -- gfx.drawText(p.a,0,10)
-    -- playdate.drawFPS(0,0)
-
-	-- if sat==false then
 	for i=#ol,1,-1 do
-        -- gfx.drawText(p.a,0,20)
-        -- gfx.drawText(p.va,0,35)
-        -- gfx.drawText(p.x,0,50)
-        -- gfx.drawText(p.y,0,65)
-    
-
 		local px=ol[i]
 		local pt1=pts[px[2]][1]
 		local pt2=pts[px[2]][2]
 		local pt3=pts[px[2]][3]
-        -- love.graphics.print("Going",0,10)
         if pt1[1] and pt2[1] and pt3[1] then
             love.graphics.print("gone",0,20)
-            -- gfx.drawText("Showing",0,80)
-            -- gfx.drawText(pt1[6]*screen.w/20,0,95)
-            -- gfx.drawText(pt1[4]*screen.h/10,0,110)
-
-            -- gfx.drawText(pt2[6]*screen.w/20,0,125)
-            -- gfx.drawText(pt2[4]*screen.h/10,0,140)
-
-
-            -- gfx.drawText(pt3[6]*screen.w/20,0,155)
-            -- gfx.drawText(pt3[4]*screen.h/10,0,170)
-
             --[[
             pt1[6]*6.4,pt1[4]*12.8
             pt2[6]*6.4,pt2[4]*12.8
@@ -354,42 +317,12 @@ function love.draw()
             ]]--
             local pdist=px[1]
 
-            love.graphics.setColor(0,0,50/pdist)
+            love.graphics.setColor(20/pdist,20/pdist,20/pdist)
 
             triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2)
             ::skip::
         end
 	end
-	-- end
-	-- gfx.drawText(p.a,0,60)
-    -- gfx.setColor(gfx.kColorBlack)
-	-- if sat then
-		-- draw_all(4)
-	-- else
-		-- draw_all(draw_all_v)
-	-- end
-    -- triangles = old_tri
-	--[[
-		-- move_dir is as shown, v187
-		p.a = 0
-		look = down
-		move_dir = right
-
-		p.a = .5
-		move_dir = right
-
-		p.a = .25
-		move_dir = down
-
-		p.a = .75
-		move_dir = up
-	]]--
-	-- h = do_intersect(10,15,54,17,p.x,p.y,p.x+math.sin(p.a*math.pi*2)*15,p.y+math.cos(p.a*math.pi*2)*15)
-	-- gfx.drawLine(10,15,54,17)
-	-- gfx.drawLine(p.x,p.y,p.x+math.sin(p.a*math.pi*2)*15,p.y+math.cos(p.a*math.pi*2)*15)
-	-- print(h[1],h[2],h[3])
-	-- gfx.drawCircleAtPoint(h[2], h[3], 4)
-	-- p.va = playdate.getCrankPosition()/360+0.25
 end
 
 init()
