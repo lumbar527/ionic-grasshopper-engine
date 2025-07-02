@@ -163,6 +163,7 @@ function init()
     rad = 20
     love.window.setMode(screen.w,screen.h)
     texture = love.graphics.newImage("texture.png")
+    textureData = love.graphics.newImageData("texture.png")
 end
 
 function tri(x1,y1,x2,y2,x3,y3,c)
@@ -189,19 +190,17 @@ function tri(x1,y1,x2,y2,x3,y3,c)
 	for i=1,p do
 		love.graphics.line(x3,y3,ux+i*sx,uy+i*sy)
 	end
-    -- love.graphics.stencil(function()
-    --     love.graphics.polygon("fill",x1,y1,x2,y2,x3,y3)
-    -- end, "replace", 1)
+end
 
-    -- love.graphics.setStencilTest("greater", 0)
-
-    -- x = min(x1,x2,x3)
-    -- y = min(y1,y2,y3)
-    -- x_max = max(x1,x2,x3) - x
-    -- y_max = max(y1,y2,y3) - y
-    -- love.graphics.draw(texture, x, y, 0, x_max/128, y_max/128)
-
-    -- love.graphics.setStencilTest()
+function draw_textured_line(x1,y1,x2,y2,image,scale,ox,oy)
+    local length = math.sqrt((x1-x2)^2 + (y1-y2)^2)
+    local step_x = math.abs(x1-x2)/length
+    local step_y = math.abs(y1-y2)/length
+    for i=0,length do
+        local r, g, b, a = image:getPixel(step_x*i, step_y*i)
+        love.graphics.setColor(r,g,b)
+        love.graphics.point(step_x*i*scale+ox,step_y*i*scale+oy)
+    end
 end
 
 function sort(l)
