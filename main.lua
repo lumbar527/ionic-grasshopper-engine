@@ -163,7 +163,7 @@ function init()
     rad = 20
     love.window.setMode(screen.w,screen.h)
     texture = love.graphics.newImage("texture.png")
-    textureData = love.graphics.newImageData("texture.png")
+    -- textureData = love.graphics.newImageData("texture.png")
 end
 
 function tri(x1,y1,x2,y2,x3,y3,c)
@@ -262,9 +262,15 @@ function love.draw()
         p.x = p.x + math.sin((p.a+.25)*math.pi*2)
         p.y = p.y + math.cos((p.a+.25)*math.pi*2)
     end
+    if love.keyboard.isDown("r") then
+        p.z = p.z + 1
+    end
+    if love.keyboard.isDown("f") then
+        p.z = p.z - 1
+    end
 
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
-	local vplane=make_cplane(54,63+p.z,p.va,rad/2,rad)
+	local vplane=make_cplane(54,63--[[+p.z]],p.va,rad/2,rad)
 
 	--[[ Clipping: Theory
 		First, obtain all the points. If they are all offscreen, then ignore or don't add them!
@@ -279,7 +285,7 @@ function love.draw()
 
 			local pdist=math.sqrt((triangles[i][j].x-p.x)^2+(triangles[i][j].y-p.y)^2)
 
-			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],--[[64,54-p.z,63,74-p.z,]]pdist+64,64+triangles[i][j].z,54,63)
+			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],--[[64,54-p.z,63,74-p.z,]]pdist+64,64+triangles[i][j].z-p.z,54,63)
 			if not z1[1] then
 				t[j][1] = false
 			end
