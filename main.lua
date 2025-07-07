@@ -198,16 +198,7 @@ function tex_tri(x1,y1,x2,y2,x3,y3,image,ix1,iy1,ix2,iy2,ix3,iy3)
 	end
 end
 
-function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)--x1,y1,x2,y2,image,scale,ox,oy)
-    -- local length = math.sqrt((x1-x2)^2 + (y1-y2)^2)
-    -- local step_x = math.abs(x1-x2)/length
-    -- local step_y = math.abs(y1-y2)/length
-    -- for i=0,length do
-    --     local r, g, b, a = image:getPixel(step_x*i, step_y*i)
-    --     love.graphics.setColor(r,g,b)
-    --     love.graphics.point(step_x*i*scale+ox,step_y*i*scale+oy)
-    -- end
-    -- local i_length = math.sqrt((ix1-ix2)^2 + (iy1-iy2)^2)
+function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)
     local length = math.sqrt((x1-x2)^2 + (y1-y2)^2)
     local i_step_x = -(ix1-ix2)/length
     local i_step_y = -(iy1-iy2)/length
