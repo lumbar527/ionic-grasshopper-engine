@@ -21,10 +21,8 @@ function do_intersect(x1,y1,x2,y2,x3,y3,x4,y4)
         t = t / t_div
         p_x, p_y = x1 + t * (x2 - x1), y1 + t * (y2 - y1)
         
-        -- if p_x>=math.min(x1,x2) and p_x<=math.max(x1,x2) and p_y>=math.min(y1,y2) and p_y<=math.max(y1,y2) and p_x>=math.min(x3,x4) and p_x<=math.max(x3,x4) and p_y>=math.min(y3,y4) and p_y<=math.max(y3,y4) then
         if p_x>=min(x3,x4) and p_x<=max(x3,x4) and p_y>=min(y3,y4) and p_y<=max(y3,y4) then
             dist=math.sqrt((x1-p_x)^2 + (y1-p_y)^2)
-            -- if math.sqrt((x2-p_x)^2 + (y2-p_y)^2) > math.sqrt((x1-x2)^2 + (y1-y2)^2) and math.sqrt((x1-p_x)^2 + (y1-p_y)^2) < math.sqrt((x1-x2)^2 + (y1-y2)^2) then
             if (x2 - x1 < 0 and p_x - x1 >= 0) or (x2 - x1 >= 0 and p_x - x1 < 0) then
                 dist = -dist
             end
@@ -52,30 +50,9 @@ function max(a,b)
     end
 end
 
--- function make_cplane(x,y,a,d,w) -- returns a line
---     a = a / 180 * math.pi -- a is given in angles; math. uses radians
---     -- center of the camera
---     cpx = x + math.cos(a) * d
---     cpy = y + math.sin(a) * d
-
---     -- if playdate.buttonIsPressed(playdate.kButtonA) then
---         -- gfx.drawLine(x,y,cx,cy)
---     -- end
-
---     -- get the ends
---     ox = math.cos(a + math.pi / 2) * w/2
---     oy = math.sin(a + math.pi / 2) * w/2
---     x1 = cpx + ox
---     x2 = cpx - ox
---     y1 = cpy + oy
---     y2 = cpy - oy
-
---     return {x1,y1,x2,y2}
--- end
 
 function make_cplane(cx,cy,a,cd,cw)
 	--camera x,y, angle, camera dist,width
-	-- a = a
 
 	cdx=cx+math.sin(a*math.pi*2)*cd
 	cdy=cy+math.cos(a*math.pi*2)*cd
@@ -85,61 +62,47 @@ function make_cplane(cx,cy,a,cd,cw)
 	px2=cdx+math.sin((a-0.25)*math.pi*2)*cw/2
 	py2=cdy+math.cos((a-0.25)*math.pi*2)*cw/2
 	
-	-- circfill(cx,cy,2,10)
-	-- line(cx,cy,cdx,cdy,12)
-	
-	-- line(px1,py1,px2,py2,12)
 	
 	return {px1,py1,px2,py2}
 end
 
 function init()
     love.mouse.setRelativeMode(true)
-	-- playdate.display.setRefreshRate(0)
 	pts={}
     triangle_function = tex_tri
     sat = true
 	p={x=32,y=32,z=10,a=-0.6,va=0.25}
---[[	m={
-		{x=0,y=0,z1=0,z2=20},
-		{x=20,y=0,z1=0,z2=20},
-		{x=0,y=20,z1=0,z2=20},
-		{x=20,y=20,z1=0,z2=20},
-	}]]--
-	-- local xx = 0
-	-- local yy = 0
-	-- local zz = -5
 	triangles=
 	{
 		{
-			{x=0,y=0,z=0},
-			{x=0,y=0,z=20},
-			{x=20,y=0,z=0}
+			{x=0,y=0,z=0,ix=0,iy=0},
+			{x=0,y=0,z=20,ix=0,iy=127},
+			{x=20,y=0,z=0,ix=127,iy=0}
 		},
 		{
-			{x=20,y=0,z=20},
-			{x=0,y=0,z=20},
-			{x=20,y=0,z=0}
+			{x=20,y=0,z=20,ix=127,iy=127},
+			{x=0,y=0,z=20,ix=0,iy=127},
+			{x=20,y=0,z=0,ix=127,iy=0}
 		},
 		{
-			{x=0,y=20,z=0},
-			{x=0,y=20,z=20},
-			{x=20,y=20,z=0}
+			{x=0,y=20,z=0,ix=0,iy=0},
+			{x=0,y=20,z=20,ix=0,iy=127},
+			{x=20,y=20,z=0,ix=127,iy=0}
 		},
 		{
-			{x=20,y=20,z=20},
-			{x=0,y=20,z=20},
-			{x=20,y=20,z=0}
+			{x=20,y=20,z=20,ix=127,iy=127},
+			{x=0,y=20,z=20,ix=0,iy=127},
+			{x=20,y=20,z=0,ix=127,iy=0}
 		},
         {
-            {x=0,y=0,z=20},
-            {x=0,y=20,z=20},
-            {x=20,y=0,z=20}
+            {x=0,y=0,z=20,ix=0,iy=0},
+            {x=0,y=20,z=20,ix=0,iy=127},
+            {x=20,y=0,z=20,ix=127,iy=0}
         },
 		{
-			{x=0,y=0,z=20},
-			{x=0,y=0,z=0},
-			{x=0,y=20,z=0}
+			{x=0,y=0,z=20,ix=0,iy=127},
+			{x=0,y=0,z=0,ix=0,iy=0},
+			{x=0,y=20,z=0,ix=127,iy=0}
 		},
 	}
 	screen={w=200,h=200}
@@ -302,6 +265,9 @@ function love.draw()
 			end
 
             t[j][4]=10-z1[6]
+
+            t[j][7] = triangles[i][j].ix
+            t[j][8] = triangles[i][j].iy
 		end
 		pts[#pts+1] = t
 	end
@@ -333,7 +299,7 @@ function love.draw()
 
             love.graphics.setColor(20/pdist,20/pdist,20/pdist)
 
-            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2,textureData,0,127,127,127,0,0)
+            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2,textureData,pt1[7],pt1[8],pt2[7],pt2[8],pt3[7],pt3[8])
             ::skip::
         end
 	end
