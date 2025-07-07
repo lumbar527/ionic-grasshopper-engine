@@ -71,7 +71,7 @@ function init()
 	pts={}
     triangle_function = tex_tri
     sat = true
-	p={x=32,y=32,z=10,a=-0.6,va=0.25}
+	p={x=100,y=100,z=10,a=-0.6,va=0.25}
 	triangles=
 	{
 		{
@@ -223,6 +223,9 @@ function love.draw()
     p.va = p.va + my/1000
     mx = 0
     my = 0
+    local oldx = p.x
+    local oldy = p.y
+    local oldz = p.z
     if love.keyboard.isDown("w") then
         p.x = p.x + math.sin(p.a*math.pi*2)
         p.y = p.y + math.cos(p.a*math.pi*2)
@@ -245,6 +248,11 @@ function love.draw()
     if love.keyboard.isDown("f") then
         p.z = p.z - 1
     end
+    -- if player_collision() then
+    --     p.x = oldx
+    --     p.y = oldy
+    --     p.z = oldz
+    -- end
 
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
 	local vplane=make_cplane(0,0,p.va,rad/2,rad/2)
@@ -295,8 +303,6 @@ function love.draw()
             pt2[6]*6.4,pt2[5]*12.8
             ]]--
             local pdist=px[1]
-
-            love.graphics.setColor(20/pdist,20/pdist,20/pdist)
 
             triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2,textureData,pt1[7],pt1[8],pt2[7],pt2[8],pt3[7],pt3[8])
             ::skip::
