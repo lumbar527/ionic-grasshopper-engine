@@ -258,7 +258,7 @@ function love.draw()
 
 			local pdist=math.sqrt((triangles[i][j].x-p.x)^2+(triangles[i][j].y-p.y)^2)
 
-			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist+0,0+triangles[i][j].z-p.z,0,0)
+			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist,triangles[i][j].z-p.z,0,0)
 			if not z1[1] then
 				t[j][1] = false
 			end
