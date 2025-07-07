@@ -148,7 +148,7 @@ function init()
 	moving=false
 	wait=90
     rad = 20
-    love.window.setMode(screen.w,screen.h)
+    love.window.setMode(screen.w*2,screen.h*2)
     texture = love.graphics.newImage("texture.png")
     textureData = love.image.newImageData("texture.png")
 end
@@ -211,8 +211,12 @@ function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)
         end
         local r,g,b,a = image:getPixel(math.floor(i_step_x*i+ix1),math.floor(i_step_y*i+iy1))
         love.graphics.setColor(r,g,b)
-        love.graphics.points(step_x*i+x1,step_y*i+y1)
+        point(step_x*i+x1,step_y*i+y1)
     end
+end
+
+function point(x,y)
+    love.graphics.rectangle("fill",(x-1)*2,(y-1)*2,2,2)
 end
 
 function sort(l)
@@ -248,9 +252,8 @@ end
 
 function love.draw()
     love.graphics.setColor(1,1,1)
-    love.graphics.rectangle("fill",0,0,screen.w,screen.h)
+    love.graphics.rectangle("fill",0,0,screen.w*2,screen.h*2)
     love.graphics.setColor(0,0,0)
-    -- love.graphics.print(p.z)
 
     pts = {}
 
@@ -320,7 +323,6 @@ function love.draw()
 		local pt2=pts[px[2]][2]
 		local pt3=pts[px[2]][3]
         if pt1[1] and pt2[1] and pt3[1] then
-            love.graphics.print("gone",0,20)
             --[[
             pt1[6]*6.4,pt1[4]*12.8
             pt2[6]*6.4,pt2[4]*12.8
