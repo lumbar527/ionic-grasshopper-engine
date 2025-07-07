@@ -350,7 +350,7 @@ function love.draw()
 
             love.graphics.setColor(20/pdist,20/pdist,20/pdist)
 
-            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2,textureData,0,0,0,128,128,128)
+            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2,textureData,0,127,127,127,0,0)
             ::skip::
         end
 	end
