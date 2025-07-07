@@ -97,7 +97,7 @@ function init()
     love.mouse.setRelativeMode(true)
 	-- playdate.display.setRefreshRate(0)
 	pts={}
-    triangle_function = tri
+    triangle_function = tex_tri
     sat = true
 	p={x=32,y=32,z=10,a=-0.6,va=0.25}
 --[[	m={
@@ -131,18 +131,11 @@ function init()
 			{x=0,y=20,z=20},
 			{x=20,y=20,z=0}
 		},
-        -- {
-        --     {x=math.cos(1)*15+xx,y=math.sin(1)*15+yy,z=0},
-        --     {x=xx-math.cos(1)*15,y=yy-math.sin(1)*15,z=0},
-        --     {x=xx-math.cos(1)*15,y=yy-math.sin(1)*15,z=-5}
-        -- }
-
         {
             {x=0,y=0,z=20},
             {x=0,y=20,z=20},
             {x=20,y=0,z=20}
         },
-
 		{
 			{x=0,y=0,z=20},
 			{x=0,y=0,z=0},
@@ -327,7 +320,7 @@ function love.draw()
     -- for i=1,128 do
     --     draw_textured_line(0,0,128,i*2,textureData,0,0,128,i)
     -- end
-    tex_tri(30,0,0,128,64,128,textureData,0,0,0,128,128,128)
+    -- tex_tri(30,0,0,128,64,128,textureData,0,0,0,128,128,128)
 
 
 	--[[ Clipping: Theory
@@ -382,7 +375,7 @@ function love.draw()
 
             love.graphics.setColor(20/pdist,20/pdist,20/pdist)
 
-            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2)
+            triangle_function(pt1[6]*screen.w/rad,pt1[4]*screen.h/rad*2,pt2[6]*screen.w/rad,pt2[4]*screen.h/rad*2,pt3[6]*screen.w/rad,pt3[4]*screen.h/rad*2,textureData,0,0,0,128,128,128)
             ::skip::
         end
 	end
