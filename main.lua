@@ -107,9 +107,7 @@ function init()
 	}
 	screen={w=200,h=200}
 	ol={}
-	horizon=0
 	moving=false
-	wait=90
     rad = 20
     s = 2
     love.window.setMode(screen.w*s,screen.h*s)
@@ -249,7 +247,7 @@ function love.draw()
     end
 
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
-	local vplane=make_cplane(54,63,p.va,rad/2,rad/2)
+	local vplane=make_cplane(0,0,p.va,rad/2,rad/2)
 
 	for i=1,#triangles do
 		local t={}
@@ -260,7 +258,7 @@ function love.draw()
 
 			local pdist=math.sqrt((triangles[i][j].x-p.x)^2+(triangles[i][j].y-p.y)^2)
 
-			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist+64,64+triangles[i][j].z-p.z,54,63)
+			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist+0,0+triangles[i][j].z-p.z,0,0)
 			if not z1[1] then
 				t[j][1] = false
 			end
