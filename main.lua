@@ -142,13 +142,7 @@ function init()
 			{x=0,y=20,z=0}
 		},
 	}
-	screen={w=400,h=400}
---[[	l={
-		{1,2},
-		{1,3},
-		{2,4},
-		{3,4}
-	}]]--
+	screen={w=200,h=200}
 	ol={}
 	horizon=0
 	moving=false
@@ -159,13 +153,11 @@ function init()
     textureData = love.image.newImageData("texture.png")
 end
 
-function tri(x1,y1,x2,y2,x3,y3,c)
+function tri(x1,y1,x2,y2,x3,y3) -- keep just in case
 	local ux,uy=x2,y2
 	local p=math.sqrt((x3-x2)^2+(y3-y2)^2)
 	local sx=(x3-x2)/p
 	local sy=(y3-y2)/p
-	-- figure out steps
-	-- local step=--area is 8*8.
 	for i=1,p do
 		love.graphics.line(x1,y1,ux+i*sx,uy+i*sy)
 	end
@@ -290,18 +282,8 @@ function love.draw()
     end
 
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
-	local vplane=make_cplane(54,63--[[+p.z]],p.va,rad/2,rad/2)
+	local vplane=make_cplane(54,63,p.va,rad/2,rad/2)
 
-    -- for i=1,128 do
-    --     draw_textured_line(0,0,128,i*2,textureData,0,0,128,i)
-    -- end
-    -- tex_tri(30,0,0,128,64,128,textureData,0,0,0,128,128,128)
-
-
-	--[[ Clipping: Theory
-		First, obtain all the points. If they are all offscreen, then ignore or don't add them!
-		How to clip? Is a point offscreen? If so, draw a line from the edge of the pplane to the lines its on. Those are your new points.
-	]]
 	for i=1,#triangles do
 		local t={}
 		for j=1,3 do
@@ -311,7 +293,7 @@ function love.draw()
 
 			local pdist=math.sqrt((triangles[i][j].x-p.x)^2+(triangles[i][j].y-p.y)^2)
 
-			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],--[[64,54-p.z,63,74-p.z,]]pdist+64,64+triangles[i][j].z-p.z,54,63)
+			local z1=do_intersect(vplane[1],vplane[2],vplane[3],vplane[4],pdist+64,64+triangles[i][j].z-p.z,54,63)
 			if not z1[1] then
 				t[j][1] = false
 			end
@@ -321,7 +303,6 @@ function love.draw()
 		pts[#pts+1] = t
 	end
 	
-	-- redo for triangle
 	for i=1,#triangles do
 		local pdist1=math.sqrt((triangles[i][1].x-p.x)^2+(triangles[i][1].y-p.y)^2+(triangles[i][1].z-p.z)^2)
 		local pdist2=math.sqrt((triangles[i][2].x-p.x)^2+(triangles[i][2].y-p.y)^2+(triangles[i][2].z-p.z)^2)
