@@ -192,6 +192,35 @@ function tri(x1,y1,x2,y2,x3,y3,c)
 	end
 end
 
+function tex_tri(x1,y1,x2,y2,x3,y3,image,ix1,iy1,ix2,iy2,ix3,iy3)
+	local ux,uy=x2,y2 -- starting position
+    local iux,iuy=ix2,iy2
+	local p=math.sqrt((x3-x2)^2+(y3-y2)^2) -- length
+	local sx=(x3-x2)/p -- steps
+	local sy=(y3-y2)/p
+    local isx = (ix3-ix2)/p
+    local isy = (iy3-iy2)/p
+	-- figure out steps
+	-- local step=--area is 8*8.
+	for i=1,p do
+		draw_textured_line(x1,y1,ux+i*sx,uy+i*sy,image,ix1,iy1,iux+i*isx,iuy+i*isy)
+	end
+	-- ux,uy=x1,y1
+	-- p=math.sqrt((x3-x1)^2+(y3-y1)^2)
+	-- sx=(x3-x1)/p
+	-- sy=(y3-y1)/p
+	-- for i=1,p do
+	-- 	love.graphics.line(x2,y2,ux+i*sx,uy+i*sy)
+	-- end
+	-- ux,uy=x2,y2
+	-- p=math.sqrt((x1-x2)^2+(y1-y2)^2)
+	-- sx=(x1-x2)/p
+	-- sy=(y1-y2)/p
+	-- for i=1,p do
+	-- 	love.graphics.line(x3,y3,ux+i*sx,uy+i*sy)
+	-- end
+end
+
 function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)--x1,y1,x2,y2,image,scale,ox,oy)
     -- local length = math.sqrt((x1-x2)^2 + (y1-y2)^2)
     -- local step_x = math.abs(x1-x2)/length
@@ -295,9 +324,10 @@ function love.draw()
     local pplane=make_cplane(p.x,p.y,p.a,rad/2,rad)
 	local vplane=make_cplane(54,63--[[+p.z]],p.va,rad/2,rad/2)
 
-    for i=1,128 do
-        draw_textured_line(0,0,128,i*2,textureData,0,0,128,i)
-    end
+    -- for i=1,128 do
+    --     draw_textured_line(0,0,128,i*2,textureData,0,0,128,i)
+    -- end
+    tex_tri(30,0,0,128,64,128,textureData,0,0,0,128,128,128)
 
 
 	--[[ Clipping: Theory
