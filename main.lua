@@ -111,7 +111,8 @@ function init()
 	moving=false
 	wait=90
     rad = 20
-    love.window.setMode(screen.w*2,screen.h*2)
+    s = 2
+    love.window.setMode(screen.w*s,screen.h*s)
     texture = love.graphics.newImage("texture.png")
     textureData = love.image.newImageData("texture.png")
 end
@@ -179,7 +180,7 @@ function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)
 end
 
 function point(x,y)
-    love.graphics.rectangle("fill",(x-1)*2,(y-1)*2,2,2)
+    love.graphics.rectangle("fill",math.floor(x)*s,math.floor(y)*s,s,s)
 end
 
 function sort(l)
@@ -215,7 +216,7 @@ end
 
 function love.draw()
     love.graphics.setColor(1,1,1)
-    love.graphics.rectangle("fill",0,0,screen.w*2,screen.h*2)
+    love.graphics.rectangle("fill",0,0,screen.w*s,screen.h*s)
     love.graphics.setColor(0,0,0)
 
     pts = {}
