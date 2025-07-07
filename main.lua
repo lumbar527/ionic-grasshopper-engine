@@ -193,25 +193,9 @@ function tex_tri(x1,y1,x2,y2,x3,y3,image,ix1,iy1,ix2,iy2,ix3,iy3)
 	local sy=(y3-y2)/p
     local isx = (ix3-ix2)/p
     local isy = (iy3-iy2)/p
-	-- figure out steps
-	-- local step=--area is 8*8.
 	for i=1,p do
 		draw_textured_line(x1,y1,ux+i*sx,uy+i*sy,image,ix1,iy1,iux+i*isx,iuy+i*isy)
 	end
-	-- ux,uy=x1,y1
-	-- p=math.sqrt((x3-x1)^2+(y3-y1)^2)
-	-- sx=(x3-x1)/p
-	-- sy=(y3-y1)/p
-	-- for i=1,p do
-	-- 	love.graphics.line(x2,y2,ux+i*sx,uy+i*sy)
-	-- end
-	-- ux,uy=x2,y2
-	-- p=math.sqrt((x1-x2)^2+(y1-y2)^2)
-	-- sx=(x1-x2)/p
-	-- sy=(y1-y2)/p
-	-- for i=1,p do
-	-- 	love.graphics.line(x3,y3,ux+i*sx,uy+i*sy)
-	-- end
 end
 
 function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)--x1,y1,x2,y2,image,scale,ox,oy)
@@ -223,13 +207,13 @@ function draw_textured_line(x1,y1,x2,y2,image,ix1,iy1,ix2,iy2)--x1,y1,x2,y2,imag
     --     love.graphics.setColor(r,g,b)
     --     love.graphics.point(step_x*i*scale+ox,step_y*i*scale+oy)
     -- end
-    local i_length = math.sqrt((ix1-ix2)^2 + (iy1-iy2)^2)
+    -- local i_length = math.sqrt((ix1-ix2)^2 + (iy1-iy2)^2)
     local length = math.sqrt((x1-x2)^2 + (y1-y2)^2)
-    local i_step_x = -(ix1-ix2)/i_length
-    local i_step_y = -(iy1-iy2)/i_length
-    local step_x = -(x1-x2)/i_length
-    local step_y = -(y1-y2)/i_length
-    for i=0,i_length-1 do
+    local i_step_x = -(ix1-ix2)/length
+    local i_step_y = -(iy1-iy2)/length
+    local step_x = -(x1-x2)/length
+    local step_y = -(y1-y2)/length
+    for i=0,length-1 do
         if math.floor(i_step_x*i+ix1)>127 then
             q()
         end
